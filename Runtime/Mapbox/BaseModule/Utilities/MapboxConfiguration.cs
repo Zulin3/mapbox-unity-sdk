@@ -1,5 +1,5 @@
 using System;
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE
 using MapboxAccountsUnity;
 #endif
 using UnityEngine;
@@ -12,7 +12,10 @@ namespace Mapbox.BaseModule.Utilities
 		public string AccessToken;
 		public bool TelemetryEnabled = true;
 		
-		#if UNITY_EDITOR
+		#if UNITY_EDITOR || UNITY_STANDALONE
+			// Desktop players have no native Mapbox billing library, but the managed
+			// MapboxAccountsUnity assembly already ships for them (its net4x build is
+			// enabled for Windows, macOS and Linux), so they take the editor path.
 			[NonSerialized] private MapboxAccounts mapboxAccounts = new MapboxAccounts();
 
 			public void Initialize()
